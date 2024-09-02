@@ -1,37 +1,49 @@
 import 'package:flutter/material.dart';
+import 'formulario.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
+
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  final List<Map<String, String>> _contas = [];
+
+  void _adicionarConta(String titulo, String saldo) {
+    setState(() {
+      _contas.add({'titulo': titulo, 'saldo': saldo});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('App Conta Bancária'),
+        title: const Text('App Conta Bancária'),
       ),
-      body: ListView(
-        padding: EdgeInsets.all(8.0),
-        children: const <Widget>[
-          Card(
-            child: ListTile(
-              title: Text('Conta Corrente'),
-              subtitle: Text('R\$ 100,00'),
-              leading: Icon(Icons.account_balance_wallet),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(8.0),
+              itemCount: _contas.length,
+              itemBuilder: (context, index) {
+                final conta = _contas[index];
+                return Card(
+                  child: ListTile(
+                    title: Text(conta['titulo']!),
+                    subtitle: Text('Saldo: R\$ ${conta['saldo']}'),
+                    leading: Icon(Icons.account_balance_wallet),
+                  ),
+                );
+              },
             ),
           ),
-          Card(
-            child: ListTile(
-              title: Text('Conta Poupança'),
-              subtitle: Text('Saldo: R\$ 10.000,00'),
-              leading: Icon(Icons.savings),
-            ),
-          ),
-          Card(
-            child: ListTile(
-              title: Text('Investimentos'),
-              subtitle: Text('Saldo: R\$ 50.000,00'),
-              leading: Icon(Icons.trending_up),
-            ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Formulario(onAdicionarConta: _adicionarConta),
           ),
         ],
       ),
