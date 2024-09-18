@@ -1,7 +1,9 @@
+import 'package:appcontabancaria/models/enums/tipo_transacao.dart';
+import 'package:appcontabancaria/models/transacao.dart';
 import 'package:flutter/material.dart';
 
 class FormTransacoes extends StatefulWidget {
-  final TextEditingController valor = TextEditingController();
+  final TextEditingController _ctrlValor = TextEditingController();
 
   FormTransacoes({super.key});
 
@@ -22,14 +24,14 @@ class _FormTransacoesState extends State<FormTransacoes> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextField(
-                controller: widget.valor,
+                controller: widget._ctrlValor,
                 style: const TextStyle(fontSize: 24.0),
                 keyboardType: TextInputType.number,
               ),
             ),
             ElevatedButton(
               onPressed: () {
-                print(widget.valor.text);
+                _criaTransacoes(context);
               },
               child: const Text('Confirmar'),
             )
@@ -37,5 +39,14 @@ class _FormTransacoesState extends State<FormTransacoes> {
         ),
       ),
     );
+  }
+
+  void _criaTransacoes(BuildContext context) {
+    double? valor = double.tryParse(widget._ctrlValor.text);
+
+    if (valor != null) {
+      final Transacao novaTransacao = Transacao(valor, TipoTransacao.credito);
+      Navigator.pop(context, novaTransacao);
+    }
   }
 }
