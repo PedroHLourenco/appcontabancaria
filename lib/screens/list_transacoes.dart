@@ -27,7 +27,7 @@ class _ListaTransacoesState extends State<ListaTransacoes> {
           itemCount: widget._transacoes.length,
           itemBuilder: (context, indice) {
             var valor = widget._transacoes[indice].valor.toString();
-            var tipo = widget._transacoes[indice].tipoTransacao.toString();
+            var tipo = widget._transacoes[indice].tipoTransacao.name;
 
             return CardList(valor, tipo);
           }),
